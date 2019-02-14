@@ -14,7 +14,7 @@ class Vecball{
   
   
   void display (){              // displays ball
-    //noStroke();
+    noStroke();
     ellipse (position.x,position.y,r,r);
   }
   
@@ -25,9 +25,10 @@ class Vecball{
   
   
   void colour(){            // makes ball flashy
-    //noStroke();
-    stroke(random(0,255),random(0,255),random(0,255));
-    fill(random(0,255),random(0,255),random(0,255));
+    noStroke();
+   // stroke(random(0,255),random(0,255),random(0,255));
+    fill(random(50,255),random(50,255),random(50,255));
+    //fill(0);
   }
   
   
@@ -44,44 +45,40 @@ class Vecball{
     if(position.y+r/2 >= height){
       velocity.y = -abs(velocity.y); 
     }
+    if (position.x+r/2>= width+50 || position.x-r/2<= 0-100 || position.y-r/2 <= 0-100 || position.y+r/2 >= height+100){
+      position.x = 0+r/2;
+      position.y = 0+r/2;
+    }
   } 
   
   
-  void keyReleased(Vecball other){  // allows you to control the speed of the ball with arrow keys
-    if (keyCode == UP){
-      velocity.y -= vel;
-      other.velocity.y -= other.vel;
-      keyCode = 0;
-    }
-    if (keyCode == RIGHT){
-      velocity.x += vel; 
-      other.velocity.x += other.vel;
-      keyCode = 0;
-    }
-    if(keyCode == DOWN){
-      velocity.y +=vel; 
-      other.velocity.y += other.vel;
-      keyCode = 0;
-    }
-    if(keyCode == LEFT){
-      velocity.x -= vel; 
-      other.velocity.x -= other.vel;
-      keyCode = 0;
-    }
-    if (key == TAB){
-      velocity.x = 0;
-      velocity.y = 0;
-      other.velocity.x = 0;
-      other.velocity.y = 0;
-      key = 0;
-    }
-    if(key == 'F'){
-      velocity.x *= -1;
-      velocity.y *= -1;
-      other.velocity.x *= -1;
-      other.velocity.y *= -1;
-      key = 0;
-      
+  void key(){  // allows you to control the speed of the ball with arrow keys
+    if (keyPressed == true){
+        if (keyCode == UP){
+          velocity.y -= vel;
+          }
+        if (keyCode == RIGHT){
+          velocity.x += vel; 
+        }
+        if(keyCode == DOWN){
+          velocity.y +=vel; 
+          }
+        if(keyCode == LEFT){
+          velocity.x -= vel; 
+          
+        }
+        if (key == TAB){
+          velocity.x = 0;
+          velocity.y = 0;
+        }
+        if(key == 'f'){
+          velocity.x *= -1;
+          velocity.y *= -1;  
+        }
+      if(key == 'd'){
+        background(255); 
+        key = 0;
+      }
     }
   }
   

@@ -6,24 +6,28 @@ Curent config, the bigger ball is not affected by the smaller ball bouncing agin
 
 */
 
+
+
 Vecball b;
 Vecball b2;
 
-Vecball [] balls  = new Vecball [200];
+Vecball [] balls  = new Vecball [300];
 
 float vel = 0.5;
 
 
 void setup(){
-  size (1500,1000);
-  background(0);
+  size (1900,1000);
+  background(255);
   
-  b = new Vecball(width/12,height/12);
-  b.r = width/20;
-  b.velocity.x = -10;
-  b.velocity.y = -1;
-  b.vel = vel/2;
-  b.m = b.r*.2;
+  int radius = width/100;    // radius of smallest balls
+  
+  b = new Vecball(width/12,height/12);    // creates an object and spawns it at specified location
+  b.r = width/20;        // radius of ball
+  b.velocity.x = -10;    //x velocity of ball
+  b.velocity.y = -1;      // y velocity of ball
+  b.vel = vel/100;      // velocity change when keys are pressed
+  b.m = b.r*.2;        // mass for elastic collisions
   
   b2 = new Vecball(width,height);
   b2.r = width/12;
@@ -33,54 +37,61 @@ void setup(){
   b2.m = b2.r*.1;
   
   for (int i = 0; i<balls.length;i++){
-    if ( i < 40){
-    balls[i] = new Vecball(i*width/40,0);
+    if(i*radius+radius+2<width){
+     balls[i] = new Vecball(i*radius+radius+1,width/6); 
     }
-    if (80>i && i >= 40){
-      balls[i] = new Vecball((i-40)*width/40,height/20); 
+    else if(i*radius+radius+2<width*2){
+     balls[i] = new Vecball((i-pow(radius,-1)*width)*radius+radius,2*width/6); 
     }
-    if (120>i && i >= 80){
-      balls[i] = new Vecball((i-80)*width/40,5*height/20); 
+    else if(i*radius+radius+2<width*3){
+     balls[i] = new Vecball((i-pow(radius,-1)*width*2)*radius+radius,3*width/6); 
     }
-    if (160>i && i >= 120){
-      balls[i] = new Vecball((i-120)*width/40,10*height/20); 
+    else if(i*radius+radius+2<width*4){
+     balls[i] = new Vecball((i-pow(radius,-1)*width*3)*radius+radius,4*width/6); 
     }
-    if (200>i && i >= 160){
-      balls[i] = new Vecball((i-160)*width/40,15*height/20); 
+    else if(i*radius+radius+2<width*5){
+      balls[i] = new Vecball((i-pow(radius,-1)*width*4)*radius+radius,5*width/6); 
     }
-    balls[i].r = width/45;
-    balls[i].velocity.x = 10;
-    balls[i].velocity.y = 10;
-    balls[i].vel = vel/2;
+   // balls[i] = new Vecball(random(0,width),random(0,height));
+   // balls[i] = new Vecball(0,0);
+    balls[i].r = radius;
+    balls[i].velocity.x = 0;
+    balls[i].velocity.y = 2;
+    balls[i].vel = vel;
     balls[i].m = balls[i].r*.1;
   }
   
 }
+void keyPressed(){
 
+}
 
 
 void draw(){
-    background(0);                    // doesn't delete their trails
- /* b.display();
+  //background(255);                    // doesn't delete their trails
+  /*b.display();
   b.colour();
   b.move();
   b.collision();
-  
-  b.collisionother(b2);
-  b.keyReleased(b2);
-  
-  b2.display();
+ 
+  b.keyReleased();
+  b.collisionother(b2); 
+ /* b2.display();
   b2.colour();
   b2.move();
   b2.collision();*/
   
   for(int i = 0; i < balls.length;i++){
+    b.collisionother(balls[i]);
+    //b2.collisionother(balls[i]);
     balls[i].display();                          // draws them
     balls[i].colour();                          // makes them flashy
     balls[i].move();                            // makes them move at all
+    balls[i].key();
     balls[i].collision();                      // collisions with walls
-    for ( int j = 0; j<balls.length;j++){
+    for ( int j = 0; j<balls.length;j++){      // inefficient, a lot of double checks
       balls[i].collisionother(balls[j]);        //balls collision with each other
+
     }
   }
 }
